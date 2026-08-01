@@ -1,0 +1,13 @@
+<div class="mark-all">
+  <%= button_to "Mark all as read", mark_all_read_entries_path, params: filter.to_params, class: "button",
+        form: { data: { turbo_confirm: "Mark everything in “#{filter.title}” as read?" } } %>
+  <% unless filter.today? %>
+    <details class="dropdown">
+      <summary class="button button--icon" aria-label="More ways to mark as read">▾</summary>
+      <div class="dropdown__menu">
+        <%= button_to "Older than a day", mark_all_read_entries_path, params: filter.to_params(older_than: "day"), class: "dropdown__item" %>
+        <%= button_to "Older than a week", mark_all_read_entries_path, params: filter.to_params(older_than: "week"), class: "dropdown__item" %>
+      </div>
+    </details>
+  <% end %>
+</div>

@@ -1,0 +1,19 @@
+<div class="empty">
+  <% if sidebar.empty? %>
+    <h2 class="empty__title">Your news, stitched together</h2>
+    <p>Add a blog, a YouTube channel or a Medium author and new posts will show up here.</p>
+    <%= link_to "Add your first source", new_subscription_path, class: "button button--primary" %>
+  <% elsif filter.view == "starred" %>
+    <h2 class="empty__title">Nothing starred yet</h2>
+    <p>Star entries you want to keep. They stay here even after you read them.</p>
+  <% elsif filter.today? %>
+    <h2 class="empty__title">You're all caught up</h2>
+    <p>Nothing new in the last 24 hours. <%= link_to "See all unread", entries_path(view: "unread") %> or <%= link_to "add another source", new_subscription_path %>.</p>
+  <% elsif filter.view == "unread" %>
+    <h2 class="empty__title">No unread entries</h2>
+    <p><%= link_to "Show everything", entries_path(filter.to_params(view: "all")) %></p>
+  <% else %>
+    <h2 class="empty__title">No entries yet</h2>
+    <p>New items appear here after the next fetch.</p>
+  <% end %>
+</div>

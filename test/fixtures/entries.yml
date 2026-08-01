@@ -1,0 +1,26 @@
+blog_new:
+  source: blog
+  guid: post-2
+  url: https://example.com/posts/second
+  title: Second post
+  summary: Short summary
+  content_html: "<p>Hello</p>"
+  media: {}
+  published_at: <%= 2.hours.ago.to_fs(:db) %>
+
+blog_old:
+  source: blog
+  guid: post-1
+  url: https://example.com/posts/first
+  title: First post
+  media: {}
+  published_at: <%= 3.days.ago.to_fs(:db) %>
+
+video:
+  source: youtube
+  guid: yt:video:abcDEF12345
+  url: https://www.youtube.com/watch?v=abcDEF12345
+  title: What's new in Android
+  media: { video_id: abcDEF12345 }
+  fingerprint: yt:video:abcDEF12345
+  published_at: <%= 1.hour.ago.to_fs(:db) %>

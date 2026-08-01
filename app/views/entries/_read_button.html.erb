@@ -1,0 +1,5 @@
+<% if user_entry.read? %>
+  <%= button_to entry_read_path(user_entry.entry_id), method: :delete, class: "icon-button", title: "Mark as unread", aria: { label: "Mark as unread" } do %>○<% end %>
+<% else %>
+  <%= button_to entry_read_path(user_entry.entry_id), class: "icon-button is-unread", title: "Mark as read", aria: { label: "Mark as read" } do %>●<% end %>
+<% end %>

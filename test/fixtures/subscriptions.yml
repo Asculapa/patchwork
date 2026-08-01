@@ -1,0 +1,13 @@
+one_blog:
+  user: one
+  source: blog
+  group: tech
+
+one_youtube:
+  user: one
+  source: youtube
+  custom_title: Android videos
+
+two_blog:
+  user: two
+  source: blog

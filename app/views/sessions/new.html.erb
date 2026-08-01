@@ -1,0 +1,19 @@
+<% content_for :title, "Sign in" %>
+
+<h1 class="auth__title">Sign in</h1>
+
+<%= form_with url: session_path, class: "form" do |form| %>
+  <div class="field">
+    <%= form.label :email_address, "Email", class: "label" %>
+    <%= form.email_field :email_address, required: true, autofocus: true, autocomplete: "username", value: params[:email_address], class: "input" %>
+  </div>
+  <div class="field">
+    <%= form.label :password, class: "label" %>
+    <%= form.password_field :password, required: true, autocomplete: "current-password", maxlength: 72, class: "input" %>
+  </div>
+  <%= form.submit "Sign in", class: "button button--primary button--block" %>
+<% end %>
+
+<p class="auth__alt">
+  <%= link_to "Forgot password?", new_password_path %> · <%= link_to "Create an account", new_registration_path %>
+</p>

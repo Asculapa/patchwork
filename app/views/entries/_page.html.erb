@@ -1,0 +1,7 @@
+<%= render partial: "entries/entry", collection: user_entries, as: :user_entry %>
+<% if next_cursor %>
+  <%= turbo_frame_tag "entries-after-#{next_cursor.parameterize}", src: entries_path(filter.to_params(before: next_cursor)),
+        loading: :lazy, target: "_top", class: "entry-list__more" do %>
+    <p class="loading">Loading more…</p>
+  <% end %>
+<% end %>

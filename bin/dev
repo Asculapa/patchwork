@@ -1,2 +1,4 @@
 #!/usr/bin/env ruby
+# Run the Solid Queue supervisor inside Puma so scheduled feed fetches happen locally.
+ENV["SOLID_QUEUE_IN_PUMA"] ||= "1"
 exec "./bin/rails", "server", *ARGV

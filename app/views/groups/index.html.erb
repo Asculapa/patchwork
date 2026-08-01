@@ -1,0 +1,33 @@
+<% content_for :title, "Groups" %>
+
+<header class="page-header">
+  <div class="page-header__text">
+    <h1 class="page-title">Groups</h1>
+    <p class="page-subtitle">Organise sources into folders like “Tech” or “Friends' blogs”.</p>
+  </div>
+</header>
+
+<%= form_with model: @group, class: "card inline-form" do |form| %>
+  <%= form.label :name, "New group", class: "visually-hidden" %>
+  <%= form.text_field :name, class: "input", placeholder: "New group name", required: true, maxlength: 50 %>
+  <%= form.submit "Create group", class: "button button--primary" %>
+  <% if @group.errors.any? %>
+    <p class="inline-form__error"><%= @group.errors.full_messages.to_sentence %></p>
+  <% end %>
+<% end %>
+
+<% if @groups.any? %>
+  <ul class="list card">
+    <% @groups.each do |group| %>
+      <li class="list__item" id="<%= dom_id(group) %>">
+        <%= link_to group.name, entries_path(group_id: group.id), class: "list__title" %>
+        <span class="muted"><%= pluralize(@source_counts[group.id].to_i, "source") %></span>
+        <span class="list__actions">
+          <%= link_to "Rename", edit_group_path(group), class: "button button--small" %>
+          <%= button_to "Delete", group_path(group), method: :delete, class: "button button--small button--danger",
+                form: { data: { turbo_confirm: "Delete #{group.name}? Its sources stay, just ungrouped." } } %>
+        </span>
+      </li>
+    <% end %>
+  </ul>
+<% end %>

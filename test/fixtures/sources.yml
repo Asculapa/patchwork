@@ -1,0 +1,21 @@
+blog:
+  kind: feed
+  url: https://example.com/feed.xml
+  site_url: https://example.com/
+  title: Example Blog
+  config: {}
+  last_fetched_at: <%= 2.hours.ago.to_fs(:db) %>
+  next_fetch_at: <%= 1.minute.ago.to_fs(:db) %>
+
+youtube:
+  kind: youtube
+  url: https://www.youtube.com/feeds/videos.xml?channel_id=UC_x5XG1OV2P6uZZ5FSM9Ttw
+  title: Google for Developers
+  config: {}
+  next_fetch_at: <%= 1.hour.from_now.to_fs(:db) %>
+
+orphan:
+  kind: feed
+  url: https://orphan.example.com/feed
+  config: {}
+  next_fetch_at: <%= 1.minute.ago.to_fs(:db) %>

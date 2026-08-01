@@ -1,0 +1,26 @@
+<% content_for :title, "Import finished" %>
+
+<header class="page-header">
+  <div class="page-header__text">
+    <h1 class="page-title">Import finished</h1>
+    <p class="page-subtitle">
+      <%= pluralize(@result.added.size, "source") %> added,
+      <%= @result.skipped.size %> already followed,
+      <%= @result.failed.size %> failed.
+      New sources are fetched in the background over the next minute.
+    </p>
+  </div>
+  <div class="page-actions">
+    <%= link_to "Go to Today", root_path, class: "button button--primary" %>
+  </div>
+</header>
+
+<% { "Added" => @result.added, "Already followed" => @result.skipped, "Failed (invalid address)" => @result.failed }.each do |label, titles| %>
+  <% next if titles.empty? %>
+  <section class="card">
+    <h2 class="card__title"><%= label %></h2>
+    <ul class="plain-list">
+      <% titles.each do |title| %><li><%= title %></li><% end %>
+    </ul>
+  </section>
+<% end %>
