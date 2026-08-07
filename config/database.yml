@@ -25,21 +25,21 @@ test:
   <<: *default
   database: storage/test.sqlite3
 
-# Store production database in the storage/ directory, which by default
-# is mounted as a persistent Docker volume in config/deploy.yml.
+# Production uses Postgres (e.g. Railway's DATABASE_URL). Cache, queue, and
+# cable share the same database as primary; they get their own tables via
+# their respective migrations_paths, so nothing collides.
 production:
-  primary:
-    <<: *default
-    database: storage/production.sqlite3
+  primary: &production_primary
+    adapter: postgresql
+    encoding: unicode
+    url: <%= ENV["DATABASE_URL"] %>
+    pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
   cache:
-    <<: *default
-    database: storage/production_cache.sqlite3
+    <<: *production_primary
     migrations_paths: db/cache_migrate
   queue:
-    <<: *default
-    database: storage/production_queue.sqlite3
+    <<: *production_primary
     migrations_paths: db/queue_migrate
   cable:
-    <<: *default
-    database: storage/production_cable.sqlite3
+    <<: *production_primary
     migrations_paths: db/cable_migrate
