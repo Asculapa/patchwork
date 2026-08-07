@@ -292,7 +292,6 @@ input[type="file"].input { padding: 0.35rem; }
 
 .main {
   width: 100%;
-  max-width: 52rem;
   padding: 1.5rem 2rem 4rem;
 }
 
@@ -481,7 +480,7 @@ input[type="file"].input { padding: 0.35rem; }
 
 /* Reader */
 
-.reader { max-width: 42rem; }
+.reader { max-width: 42rem; margin-inline: auto; }
 .reader__back { margin-bottom: 1rem; font-size: 0.9rem; }
 .reader__back a { color: var(--muted); }
 .reader__meta { display: flex; flex-wrap: wrap; align-items: center; gap: 0.4rem; color: var(--muted); font-size: 0.875rem; }
