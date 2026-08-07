@@ -10,10 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_09_11_120600) do
-  # These are extensions that must be enabled in order to support this database
-  enable_extension "pg_catalog.plpgsql"
-
+ActiveRecord::Schema[8.1].define(version: 2026_09_12_130656) do
   create_table "entries", force: :cascade do |t|
     t.string "author"
     t.text "content_html"
@@ -21,7 +18,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_11_120600) do
     t.string "fingerprint"
     t.string "guid", null: false
     t.string "image_url"
-    t.json "media", default: {}, null: false
+    t.column "media", :jsonb, default: {}, null: false
     t.datetime "published_at", null: false
     t.integer "source_id", null: false
     t.text "summary"
