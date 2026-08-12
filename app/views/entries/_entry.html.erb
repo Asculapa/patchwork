@@ -1,6 +1,6 @@
 <% entry = user_entry.entry %>
 <article id="<%= dom_id(user_entry) %>" class="entry<%= " is-read" if user_entry.read? %>">
-  <%= link_to entry_path(entry), class: "entry__main", data: { turbo_frame: "_top" } do %>
+  <%= link_to entry_path(entry), class: "entry__main", data: { turbo_frame: "_top", turbo_prefetch: false } do %>
     <div class="entry__body">
       <div class="entry__meta">
         <%= source_avatar(entry.source, css_class: "avatar avatar--xs") %>
