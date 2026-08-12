@@ -148,18 +148,18 @@ code {
 .icon-button {
   display: inline-grid;
   place-items: center;
-  width: 2rem;
-  height: 2rem;
+  width: 2.75rem;
+  height: 2.75rem;
   border: 0;
   border-radius: var(--radius-sm);
   background: transparent;
   color: var(--muted);
-  font-size: 1rem;
+  font-size: 1.75rem;
   cursor: pointer;
 }
 .icon-button:hover { background: var(--surface-2); color: var(--text); }
 .icon-button.is-on { color: var(--warn); }
-.icon-button.is-unread { color: var(--accent); font-size: 0.7rem; }
+.icon-button.is-unread { color: var(--accent); font-size: 1.3rem; }
 
 .link-button {
   padding: 0;
@@ -367,6 +367,8 @@ input[type="file"].input { padding: 0.35rem; }
 .segmented__item:hover { text-decoration: none; color: var(--text); }
 .segmented__item.is-active { background: var(--surface-2); color: var(--text); }
 
+.account-tabs { margin-bottom: 1.25rem; }
+
 .mark-all { display: inline-flex; gap: 0.25rem; align-items: center; }
 
 .dropdown { position: relative; }
@@ -530,7 +532,7 @@ input[type="file"].input { padding: 0.35rem; }
 .candidate__subscribed { margin: 0; color: var(--success); }
 
 .list { padding: 0; list-style: none; }
-.list__item { display: flex; flex-wrap: wrap; align-items: center; gap: 0.75rem; padding: 0.6rem 0; }
+.list__item { display: flex; flex-wrap: wrap; align-items: center; gap: 0.75rem; padding: 0.6rem 1.25rem; }
 .list__item + .list__item { border-top: 1px solid var(--border); }
 .list__title { font-weight: 600; }
 .list__actions { display: flex; gap: 0.35rem; margin-left: auto; }
