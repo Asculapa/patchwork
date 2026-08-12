@@ -11,8 +11,8 @@ class EntriesControllerTest < ActionDispatch::IntegrationTest
     assert_redirected_to new_session_path
   end
 
-  test "today shows recent unread entries grouped by group and source" do
-    get root_path
+  test "today view shows recent unread entries grouped by group and source" do
+    get entries_path(view: "today")
 
     assert_response :success
     assert_select ".today-group__title", text: "Tech"
@@ -20,6 +20,17 @@ class EntriesControllerTest < ActionDispatch::IntegrationTest
     assert_select ".entry__title", text: "Second post"
     assert_select ".entry__title", text: "What's new in Android"
     assert_select ".entry__title", text: "First post", count: 0
+  end
+
+  test "root defaults to all unread entries, not just today's" do
+    old_unread = Entry.create!(source: sources(:blog), guid: "very-old", title: "Very old unread post", published_at: 3.days.ago, media: {})
+    UserEntry.create!(user: users(:one), entry: old_unread, subscription: subscriptions(:one_blog), published_at: old_unread.published_at)
+
+    get root_path
+
+    assert_response :success
+    assert_select ".entry__title", text: "Very old unread post"
+    assert_select ".entry__title", text: "Second post"
   end
 
   test "starred and all views" do

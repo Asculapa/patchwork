@@ -74,7 +74,7 @@ class EntryFilter
 
   private
     def default_view
-      narrowed? ? "unread" : "today"
+      "unread"
     end
 
     def cursor_for(user_entry)

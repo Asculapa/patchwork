@@ -1,6 +1,6 @@
 <nav id="sidebar" class="nav" data-controller="nav" aria-label="Reading">
   <div class="nav__section">
-    <%= nav_link "Today", root_path, count: sidebar.today_count %>
+    <%= nav_link "Today", entries_path(view: "today"), count: sidebar.today_count %>
     <%= nav_link "All unread", entries_path(view: "unread"), count: sidebar.unread_count %>
     <%= nav_link "Starred", entries_path(view: "starred"), count: sidebar.starred_count %>
   </div>
@@ -35,9 +35,7 @@
 
   <div class="nav__footer">
     <%= link_to "Manage sources", subscriptions_path %>
-    <%= link_to "Groups", groups_path %>
-    <%= link_to "Import / export", new_opml_path %>
-    <%= link_to "Settings", settings_path %>
+    <%= link_to "Account", settings_path %>
     <%= button_to "Sign out", session_path, method: :delete, class: "link-button" %>
   </div>
 </nav>
