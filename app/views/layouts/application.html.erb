@@ -4,7 +4,7 @@
     <%= render "layouts/head" %>
   </head>
 
-  <body class="app" data-controller="sidebar" data-sidebar-open-class="sidebar-open">
+  <body class="app" data-controller="sidebar" data-sidebar-open-class="sidebar-open" data-action="keydown.esc@window->sidebar#close">
     <header class="topbar">
       <button type="button" class="icon-button topbar__menu" data-action="sidebar#toggle" aria-label="Toggle navigation">☰</button>
       <%= link_to root_path, class: "brand" do %>
@@ -14,6 +14,7 @@
     </header>
 
     <div class="layout">
+      <div class="sidebar-backdrop" data-action="click->sidebar#close"></div>
       <aside class="sidebar">
         <%= render "shared/sidebar" %>
       </aside>
