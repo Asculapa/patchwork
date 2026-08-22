@@ -28,7 +28,7 @@
           <tr id="<%= dom_id(subscription) %>">
             <td>
               <%= link_to entries_path(subscription_id: subscription.id), class: "source-cell" do %>
-                <%= source_avatar(source, css_class: "avatar avatar--sm") %>
+                <%= source_avatar(source, title: subscription.title, css_class: "avatar avatar--sm") %>
                 <span>
                   <strong><%= subscription.title %></strong>
                   <% if subscription.muted? %><span class="badge">Muted</span><% end %>

@@ -8,11 +8,14 @@ module ApplicationHelper
     @sidebar ||= Sidebar.new(Current.user)
   end
 
-  def source_avatar(source, css_class: "avatar")
+  # `title` defaults to the source's own title, but callers rendering a
+  # subscription should pass `subscription.title` so a custom title's letter
+  # matches its label instead of staying stuck on the feed's original name.
+  def source_avatar(source, title: source.display_title, css_class: "avatar")
     if source.icon_url.present?
       image_tag source.icon_url, alt: "", class: css_class, loading: "lazy", referrerpolicy: "no-referrer"
     else
-      tag.span source.display_title.first.to_s.upcase, class: [ css_class, "avatar--letter", "avatar--c#{source.id.to_i % AVATAR_COLORS}" ],
+      tag.span title.first.to_s.upcase, class: [ css_class, "avatar--letter", "avatar--c#{source.id.to_i % AVATAR_COLORS}" ],
         aria: { hidden: true }
     end
   end

@@ -16,7 +16,7 @@
 
       <% subscriptions.each do |subscription| %>
         <%= link_to entries_path(subscription_id: subscription.id), class: [ "nav-link", "nav-link--source", ("is-muted" if subscription.muted?) ] do %>
-          <%= source_avatar(subscription.source, css_class: "avatar avatar--sm") %>
+          <%= source_avatar(subscription.source, title: subscription.title, css_class: "avatar avatar--sm") %>
           <span class="nav-link__label"><%= subscription.title %></span>
           <% if subscription.source.failing? %>
             <span class="badge badge--warn" title="<%= subscription.source.last_error %>">!</span>

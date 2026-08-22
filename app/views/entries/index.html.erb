@@ -44,7 +44,7 @@
           <div class="today-source">
             <h3 class="today-source__title">
               <%= link_to entries_path(subscription_id: subscription.id) do %>
-                <%= source_avatar(subscription.source, css_class: "avatar avatar--sm") %>
+                <%= source_avatar(subscription.source, title: subscription.title, css_class: "avatar avatar--sm") %>
                 <span><%= subscription.title %></span>
               <% end %>
               <span class="count"><%= user_entries.size %></span>
