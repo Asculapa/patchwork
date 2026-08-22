@@ -6,6 +6,7 @@ Rails.application.routes.draw do
   resources :passwords, param: :token
   resource :registration, only: %i[new create]
   resource :settings, only: %i[show update]
+  resources :push_subscriptions, only: %i[create destroy], constraints: { id: %r{.+} }
 
   resources :entries, only: %i[index show] do
     collection { post :mark_all_read }

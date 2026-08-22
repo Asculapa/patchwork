@@ -2,6 +2,9 @@ default: &default
   schedule_due_sources:
     class: ScheduleDueSourcesJob
     schedule: every minute
+  send_digest_notifications:
+    class: SendDigestNotificationsJob
+    schedule: every 15 minutes
 
 development:
   <<: *default

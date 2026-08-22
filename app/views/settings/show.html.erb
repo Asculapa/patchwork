@@ -22,3 +22,22 @@
     <%= form.submit "Save", class: "button button--primary" %>
   </div>
 <% end %>
+
+<div class="card form" data-controller="push-notifications">
+  <div class="field">
+    <span class="label">Notifications</span>
+    <p class="hint" data-push-notifications-target="unsupported" hidden>
+      This browser doesn't support push notifications.
+    </p>
+    <p class="hint">
+      Get a reminder at 9am and 9pm (your time) when you have unread articles. This is per
+      device &mdash; enable it on each browser or phone you want notified.
+    </p>
+  </div>
+  <div class="form__actions">
+    <button type="button" class="button button--primary" data-push-notifications-target="enableButton"
+      data-action="push-notifications#enable" hidden>Enable notifications on this device</button>
+    <button type="button" class="button" data-push-notifications-target="disableButton"
+      data-action="push-notifications#disable" hidden>Disable notifications on this device</button>
+  </div>
+</div>

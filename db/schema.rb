@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_09_12_130656) do
+ActiveRecord::Schema[8.1].define(version: 2026_09_12_172519) do
   create_table "entries", force: :cascade do |t|
     t.string "author"
     t.text "content_html"
@@ -47,6 +47,17 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_12_130656) do
     t.datetime "updated_at", null: false
     t.integer "user_id", null: false
     t.index ["user_id", "name"], name: "index_groups_on_user_id_and_name", unique: true
+  end
+
+  create_table "push_subscriptions", force: :cascade do |t|
+    t.string "auth_key", null: false
+    t.datetime "created_at", null: false
+    t.text "endpoint", null: false
+    t.string "p256dh_key", null: false
+    t.datetime "updated_at", null: false
+    t.integer "user_id", null: false
+    t.index ["endpoint"], name: "index_push_subscriptions_on_endpoint", unique: true
+    t.index ["user_id"], name: "index_push_subscriptions_on_user_id"
   end
 
   create_table "sessions", force: :cascade do |t|
@@ -286,6 +297,8 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_12_130656) do
   create_table "users", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.string "email_address", null: false
+    t.date "last_evening_notification_on"
+    t.date "last_morning_notification_on"
     t.string "password_digest", null: false
     t.string "time_zone", default: "UTC", null: false
     t.datetime "updated_at", null: false
@@ -295,6 +308,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_12_130656) do
   add_foreign_key "entries", "sources", on_delete: :cascade
   add_foreign_key "fetch_logs", "sources", on_delete: :cascade
   add_foreign_key "groups", "users", on_delete: :cascade
+  add_foreign_key "push_subscriptions", "users"
   add_foreign_key "sessions", "users"
   add_foreign_key "solid_queue_batch_executions", "solid_queue_batches", column: "batch_id", on_delete: :cascade
   add_foreign_key "solid_queue_batch_executions", "solid_queue_jobs", column: "job_id", on_delete: :cascade

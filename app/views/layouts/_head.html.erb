@@ -8,6 +8,7 @@
 <meta name="theme-color" content="#161513" media="(prefers-color-scheme: dark)">
 <%= csrf_meta_tags %>
 <%= csp_meta_tag %>
+<meta name="vapid-public-key" content="<%= Rails.application.credentials.dig(:vapid, :public_key) %>">
 
 <%= yield :head %>
 
