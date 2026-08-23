@@ -81,3 +81,7 @@ gem "webmock", "~> 3.26", group: :test
 gem "json", "~> 2.19"
 
 gem "honeybadger", "~> 6.9"
+
+# Sends transactional email through Resend's HTTP API instead of SMTP,
+# since some hosts (Railway, some Docker setups) block outbound port 587.
+gem "resend", "~> 0.19"
