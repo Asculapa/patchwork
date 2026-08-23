@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_09_12_172519) do
+ActiveRecord::Schema[8.1].define(version: 2026_09_12_193316) do
   create_table "entries", force: :cascade do |t|
     t.string "author"
     t.text "content_html"
@@ -295,6 +295,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_12_172519) do
   end
 
   create_table "users", force: :cascade do |t|
+    t.datetime "confirmed_at"
     t.datetime "created_at", null: false
     t.string "email_address", null: false
     t.date "last_evening_notification_on"

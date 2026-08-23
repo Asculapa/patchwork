@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <%= render "layouts/head" %>
+  </head>
+
+  <body class="auth">
+    <main class="auth__card auth__card--wide legal-content">
+      <%= link_to root_path, class: "brand brand--center" do %>
+        <span class="brand__mark" aria-hidden="true"></span>Patchwork
+      <% end %>
+      <%= render "shared/flash" %>
+      <%= yield %>
+      <p class="auth__alt"><%= link_to "Back to Patchwork", root_path %></p>
+    </main>
+  </body>
+</html>

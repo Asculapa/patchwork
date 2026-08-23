@@ -1,7 +1,7 @@
 # Patchwork — Technical Requirements
 
 **Status:** Draft v0.1 · 2026-09-11
-**Stack:** Rails 8.1 · Ruby 3.2 · SQLite · Hotwire (Turbo + Stimulus) · Solid Queue / Cache / Cable · Action Mailbox · Kamal
+**Stack:** Rails 8.1 · Ruby 3.2 · PostgreSQL (production) / SQLite (dev, test) · Hotwire (Turbo + Stimulus) · Solid Queue / Cache / Cable · Action Mailbox · Railway
 
 ---
 
@@ -441,7 +441,7 @@ Reference load: 300 subscriptions and 20k unread entries per user, 50 users on a
 - Source health (last fetch, last error, next fetch) is shown on the source settings page.
 
 ### 7.4 Database
-SQLite in production is viable with Rails 8's defaults (WAL mode, Solid Queue/Cache/Cable in separate databases). Revisit PostgreSQL if write contention appears, or if full-text search needs outgrow SQLite FTS5. See Open question 3.
+Production runs PostgreSQL (Railway's `DATABASE_URL`), with Solid Cache/Queue/Cable sharing the same connection. Development and test stay on SQLite. Revisit full-text search if SQLite FTS5-shaped assumptions in dev diverge from Postgres behavior.
 
 ### 7.5 Data retention
 - Read, unstarred entries older than 90 days are deleted (configurable per user). Starred entries are kept forever.
@@ -552,11 +552,31 @@ Summaries, cross-source story clustering, "you might like" suggestions.
 
 ## 10. Open questions
 
-1. **Audience:** is Patchwork a personal / self-hosted app, or a public multi-user service? This affects sign-up (open or invite-only), abuse controls, cost limits, and the choice of email ingress.
+1. ~~**Audience:**~~ **Resolved:** public multi-user service. Registration is open, gated by email confirmation and Cloudflare Turnstile (see Phase 0).
 2. **Inbound email:** which domain, and which ingress: Postmark, Mailgun, SendGrid, or a self-hosted Postfix relay?
-3. **Database:** stay on SQLite in production (recommended to start), or move to PostgreSQL now?
+3. ~~**Database:**~~ **Resolved:** PostgreSQL in production (via Railway's `DATABASE_URL`), SQLite in development/test. See `config/database.yml`.
 4. **"Today":** does it mean the last 24 hours (current proposal) or "since my last visit"?
 5. **Plans:** are per-account features going to be paid tiers? That would add a `plan` concept to integrations.
 6. **Mobile:** is a responsive PWA enough, or is a native app / public API expected later?
 7. **YouTube Data API:** worth a key and quota management, or is page-based channel resolution enough?
-8. **Error tracking and hosting:** which error tracker (Sentry, Honeybadger, AppSignal), and which server for Kamal deploys?
+8. ~~**Error tracking and hosting:**~~ **Resolved:** Honeybadger for error tracking; Railway for hosting (not Kamal — `config/deploy.yml` and `.kamal/` are vestigial and should be removed in a follow-up cleanup).
+
+---
+
+## 11. Phase 0 — Production readiness
+
+**Goal:** safe to open registration to the public internet. Sits alongside the feature phases in §9, since it's cross-cutting rather than a feature milestone.
+
+**Status: implemented (2026-09-12).**
+
+| Area | What shipped |
+|---|---|
+| Email confirmation | `confirmed_at` on `users`; `ConfirmationsController` (`new`/`create` to resend, `show` to confirm via a signed `generates_token_for(:email_confirmation)` token, 1-day expiry); `ConfirmationsMailer`. Registration no longer starts a session — it sends a confirmation email and redirects to sign-in. `SessionsController#create` blocks unconfirmed users, redirecting to the resend page. |
+| CAPTCHA | Cloudflare Turnstile on the registration form (`Turnstile::Verifier`, `app/services/turnstile/verifier.rb`). No gem — a plain server-side POST to Cloudflare's `siteverify` endpoint. Skipped entirely (widget hidden, verification short-circuits to success) when `TURNSTILE_SECRET_KEY`/`TURNSTILE_SITE_KEY` aren't set, so development and test need no configuration. CSP's `script-src`/`frame-src`/`connect-src` allow `challenges.cloudflare.com`. |
+| Real email delivery | Already done before this phase (see `379acba`, `82b1cd5`): Resend SMTP, `default_url_options` pointed at `patchwork.buzz`. |
+| Error tracking | Honeybadger gem added, configured entirely by the `HONEYBADGER_API_KEY` env var (no committed config file). Reports are disabled by default in development/test (gem default), so it's inert until that var is set in Railway. |
+| Hosting | Already done before this phase: Railway + Postgres, `force_ssl`, `host_authorization`. `config/deploy.yml` / Kamal are unused leftovers from `rails new` — safe to delete once confirmed nobody's relying on them. |
+| Legal pages | `LegalController#privacy`/`#terms`, linked from the registration form, the sign-in page isn't linked directly but settings is. Drafted as real boilerplate copy, not placeholders — still worth a legal read-through before you rely on it, especially the account-deletion and EU-user-data commitments it makes, since there's no self-service deletion feature yet (deletion is handled manually via `privacy@patchwork.buzz`). |
+| Backups | **Not done.** Check what Railway's Postgres plan includes by default; the `storage/` Active Storage volume isn't backed up off-box. |
+
+**Env vars to set in Railway** (all optional — each feature no-ops without its key, so nothing breaks if you deploy before setting them): `TURNSTILE_SITE_KEY`, `TURNSTILE_SECRET_KEY`, `HONEYBADGER_API_KEY`.

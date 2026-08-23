@@ -11,9 +11,14 @@ class RegistrationsController < ApplicationController
   def create
     @user = User.new(params.expect(user: %i[email_address password password_confirmation time_zone]))
 
+    unless Turnstile::Verifier.verify(params[:"cf-turnstile-response"], remote_ip: request.remote_ip)
+      @user.errors.add(:base, "Verification failed. Please try again.")
+      return render :new, status: :unprocessable_entity
+    end
+
     if @user.save
-      start_new_session_for @user
-      redirect_to new_subscription_path, notice: "Welcome to Patchwork! Add your first source."
+      @user.deliver_email_confirmation
+      redirect_to new_session_path, notice: "Check your email to confirm your account before signing in."
     else
       render :new, status: :unprocessable_entity
     end

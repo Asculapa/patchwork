@@ -2,8 +2,11 @@ Rails.application.routes.draw do
   get "manifest" => "rails/pwa#manifest", as: :pwa_manifest
   get "service-worker" => "rails/pwa#service_worker", as: :pwa_service_worker
 
-  resource :session
+  get "login", to: "sessions#new", as: :new_session
+  post "login", to: "sessions#create", as: :login
+  delete "logout", to: "sessions#destroy", as: :logout
   resources :passwords, param: :token
+  resources :confirmations, only: %i[new create show], param: :token
   resource :registration, only: %i[new create]
   resource :settings, only: %i[show update]
   resources :push_subscriptions, only: %i[create destroy], constraints: { id: %r{.+} }
@@ -21,6 +24,9 @@ Rails.application.routes.draw do
   end
   resources :groups, except: %i[show new]
   resource :opml, only: %i[show new create], controller: "opml"
+
+  get "privacy" => "legal#privacy", as: :privacy
+  get "terms" => "legal#terms", as: :terms
 
   # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.
   # Can be used by load balancers and uptime monitors to verify that the app is live.
