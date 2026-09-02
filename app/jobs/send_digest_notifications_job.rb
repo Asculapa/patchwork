@@ -27,24 +27,8 @@ class SendDigestNotificationsJob < ApplicationJob
       message = "There #{count == 1 ? "is" : "are"} #{helpers.pluralize(count, "new article")} to read!"
 
       user.push_subscriptions.find_each do |subscription|
-        send_push(subscription, title: message)
+        WebPushDelivery.send(subscription, title: message, path: Rails.application.routes.url_helpers.entries_path)
       end
-    end
-
-    def send_push(subscription, title:)
-      Webpush.payload_send(
-        message: { title: title, options: { data: { path: Rails.application.routes.url_helpers.entries_path } } }.to_json,
-        endpoint: subscription.endpoint,
-        p256dh: subscription.p256dh_key,
-        auth: subscription.auth_key,
-        vapid: {
-          subject: Rails.application.credentials.dig(:vapid, :subject),
-          public_key: Rails.application.credentials.dig(:vapid, :public_key),
-          private_key: Rails.application.credentials.dig(:vapid, :private_key)
-        }
-      )
-    rescue Webpush::InvalidSubscription, Webpush::ExpiredSubscription
-      subscription.destroy
     end
 
     def helpers

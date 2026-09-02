@@ -3,7 +3,7 @@ import { Controller } from "@hotwired/stimulus"
 // Lets the current device opt in/out of Web Push. A subscription is
 // per-browser, so this reflects THIS device's state, not an account setting.
 export default class extends Controller {
-  static targets = [ "enableButton", "disableButton", "unsupported" ]
+  static targets = [ "enableButton", "disableButton", "testButton", "status", "unsupported" ]
 
   async connect() {
     if (!("serviceWorker" in navigator) || !("PushManager" in window)) {
@@ -49,9 +49,38 @@ export default class extends Controller {
     this.toggle(false)
   }
 
+  async test() {
+    const registration = await navigator.serviceWorker.ready
+    const subscription = await registration.pushManager.getSubscription()
+    if (!subscription) return
+
+    this.setStatus("Sending…")
+
+    const response = await fetch("/push_subscriptions/test", {
+      method: "POST",
+      headers: this.jsonHeaders,
+      body: JSON.stringify({ endpoint: subscription.endpoint })
+    })
+
+    if (response.ok) {
+      this.setStatus("Sent! If it doesn't show up, check this device's notification permissions for Patchwork.")
+    } else {
+      const { errors } = await response.json().catch(() => ({ errors: [] }))
+      this.setStatus(errors[0] || "Couldn't send the test notification.")
+    }
+  }
+
+  setStatus(message) {
+    if (!this.hasStatusTarget) return
+    this.statusTarget.textContent = message
+    this.statusTarget.hidden = false
+  }
+
   toggle(enabled) {
     this.enableButtonTarget.hidden = enabled
     this.disableButtonTarget.hidden = !enabled
+    this.testButtonTarget.hidden = !enabled
+    if (!enabled && this.hasStatusTarget) this.statusTarget.hidden = true
   }
 
   subscriptionParams(subscription) {
