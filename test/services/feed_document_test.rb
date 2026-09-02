@@ -39,6 +39,42 @@ class FeedDocumentTest < ActiveSupport::TestCase
     end
   end
 
+  test "uses Reddit's generic icon rather than the per-subreddit logo" do
+    document = FeedDocument.parse(file_fixture("feeds/reddit.xml").read, url: "https://www.reddit.com/r/programming/.rss")
+
+    assert_equal "https://www.redditstatic.com/icon.png", document.icon_url
+  end
+
+  test "falls back to Atom's logo when there is no icon" do
+    xml = <<~XML
+      <feed xmlns="http://www.w3.org/2005/Atom">
+        <title>Logo Only</title>
+        <logo>https://example.com/logo.png</logo>
+        <id>urn:uuid:logo-only</id>
+        <updated>2026-09-10T12:00:00Z</updated>
+      </feed>
+    XML
+
+    document = FeedDocument.parse(xml, url: "https://example.com/feed.atom")
+
+    assert_equal "https://example.com/logo.png", document.icon_url
+  end
+
+  test "strips a stray trailing slash after the icon's extension" do
+    xml = <<~XML
+      <feed xmlns="http://www.w3.org/2005/Atom">
+        <title>No Logo</title>
+        <icon>https://example.com/icon.png/</icon>
+        <id>urn:uuid:no-logo</id>
+        <updated>2026-09-10T12:00:00Z</updated>
+      </feed>
+    XML
+
+    document = FeedDocument.parse(xml, url: "https://example.com/feed.atom")
+
+    assert_equal "https://example.com/icon.png", document.icon_url
+  end
+
   test "parses YouTube feeds into video entries" do
     document = FeedDocument.parse(file_fixture("feeds/youtube.xml").read, url: "https://www.youtube.com/feeds/videos.xml?channel_id=UC_x5XG1OV2P6uZZ5FSM9Ttw")
     video = document.entries.first

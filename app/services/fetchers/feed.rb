@@ -15,7 +15,7 @@ module Fetchers
         last_modified: response["last-modified"],
         title: document.title,
         site_url: document.site_url,
-        icon_url: document.icon_url,
+        icon_url: document.icon_url || fallback_icon_url(document),
         description: document.description,
         permanent_url: response.permanent_url,
         min_interval: [ document.min_interval.to_i, header_min_interval(response) ].max,
@@ -28,6 +28,15 @@ module Fetchers
     private
       def conditional_headers
         { "If-None-Match" => source.etag, "If-Modified-Since" => source.last_modified }.compact
+      end
+
+      # Most feeds carry their own icon, but plain blogs sometimes don't and
+      # YouTube's never does -- scrape the site once, only until we land one
+      # (icon_url sticks once set, see Source#record_success!).
+      def fallback_icon_url(document)
+        return if source.icon_url.present? || document.site_url.blank?
+
+        SiteIcon.fetch(document.site_url, prefer_social_image: source.youtube?)
       end
 
       def not_modified(response)
