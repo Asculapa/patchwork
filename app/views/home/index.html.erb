@@ -1,0 +1,53 @@
+<% content_for :title, "Your feeds, in one place" %>
+
+<section class="hero">
+  <h1 class="hero__title">All your feeds. One inbox. No algorithm.</h1>
+  <p class="hero__subtitle">
+    Patchwork gathers your blogs, YouTube channels, newsletters and more into a single
+    feed you read in the order you choose &mdash; grouped the way you like, with nothing
+    pushed at you by anyone else.
+  </p>
+  <div class="hero__actions">
+    <%= link_to "Get started free", new_registration_path, class: "button button--primary button--large" %>
+    <%= link_to "Sign in", new_session_path, class: "button button--large" %>
+  </div>
+  <p class="hero__sources">
+    <span>Works with</span>
+    <span class="badge">Blogs</span>
+    <span class="badge">YouTube</span>
+    <span class="badge">Medium</span>
+    <span class="badge">Substack</span>
+    <span class="badge">Reddit</span>
+    <span class="badge">and more</span>
+  </p>
+</section>
+
+<section class="features">
+  <div class="feature-card">
+    <h2 class="feature-card__title">Paste a link, we find the feed</h2>
+    <p>
+      Drop in a homepage, a YouTube handle, or a subreddit and Patchwork works out how to
+      follow it &mdash; previewing recent items before you subscribe. New source types are
+      added regularly.
+    </p>
+  </div>
+  <div class="feature-card">
+    <h2 class="feature-card__title">Today, grouped your way</h2>
+    <p>
+      A daily view surfaces what's new, organized into the groups you set up &mdash;
+      "Tech", "Friends' blogs", whatever makes sense to you.
+    </p>
+  </div>
+  <div class="feature-card">
+    <h2 class="feature-card__title">Read it, star it, move on</h2>
+    <p>
+      Mark entries read as you go, star what matters, and move between sources without
+      leaving the list. Import or export your subscriptions as OPML anytime.
+    </p>
+  </div>
+</section>
+
+<section class="cta-band">
+  <h2>Own your reading list again.</h2>
+  <%= link_to "Create your account", new_registration_path, class: "button button--primary button--large" %>
+</section>

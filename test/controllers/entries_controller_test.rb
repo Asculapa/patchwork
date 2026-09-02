@@ -7,7 +7,7 @@ class EntriesControllerTest < ActionDispatch::IntegrationTest
 
   test "requires sign in" do
     sign_out
-    get root_path
+    get entries_path
     assert_redirected_to new_session_path
   end
 
@@ -22,11 +22,11 @@ class EntriesControllerTest < ActionDispatch::IntegrationTest
     assert_select ".entry__title", text: "First post", count: 0
   end
 
-  test "root defaults to all unread entries, not just today's" do
+  test "index defaults to all unread entries, not just today's" do
     old_unread = Entry.create!(source: sources(:blog), guid: "very-old", title: "Very old unread post", published_at: 3.days.ago, media: {})
     UserEntry.create!(user: users(:one), entry: old_unread, subscription: subscriptions(:one_blog), published_at: old_unread.published_at)
 
-    get root_path
+    get entries_path
 
     assert_response :success
     assert_select ".entry__title", text: "Very old unread post"

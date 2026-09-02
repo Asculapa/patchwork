@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <%= render "layouts/head" %>
+  </head>
+
+  <body class="landing-page">
+    <header class="landing-nav">
+      <%= link_to root_path, class: "brand" do %>
+        <span class="brand__mark" aria-hidden="true"></span>Patchwork
+      <% end %>
+      <nav class="landing-nav__links">
+        <%= link_to "Sign in", new_session_path, class: "button button--ghost" %>
+        <%= link_to "Get started", new_registration_path, class: "button button--primary" %>
+      </nav>
+    </header>
+
+    <%= render "shared/flash" %>
+    <%= yield %>
+
+    <footer class="landing-footer">
+      <span>&copy; <%= Date.current.year %> Patchwork</span>
+      <div class="landing-footer__links">
+        <%= link_to "Privacy", privacy_path %>
+        <%= link_to "Terms", terms_path %>
+      </div>
+    </footer>
+  </body>
+</html>
