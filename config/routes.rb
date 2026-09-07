@@ -23,8 +23,17 @@ Rails.application.routes.draw do
 
   resources :subscriptions, except: :show do
     member { post :refresh }
+    scope module: :subscriptions do
+      resource :position, only: :update
+    end
   end
-  resources :groups, except: %i[show new]
+  resources :groups, except: %i[show new] do
+    scope module: :groups do
+      resource :position, only: :update
+      resource :collapse, only: %i[create destroy]
+    end
+  end
+  resource :ungrouped_collapse, only: %i[create destroy]
   resource :opml, only: %i[show new create], controller: "opml"
 
   get "privacy" => "legal#privacy", as: :privacy

@@ -43,7 +43,7 @@ class GroupsController < ApplicationController
     end
 
     def load_groups
-      @groups = Current.user.groups.alphabetical
+      @groups = Current.user.groups.ordered
       @source_counts = Current.user.subscriptions.group(:group_id).count
     end
 end

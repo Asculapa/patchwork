@@ -6,8 +6,8 @@ module Opml
     end
 
     def call
-      by_group = @user.subscriptions.includes(:source, :group).alphabetical.group_by(&:group)
-      groups = by_group.keys.compact.sort_by { |group| group.name.downcase }
+      by_group = @user.subscriptions.includes(:source, :group).ordered.group_by(&:group)
+      groups = @user.groups.ordered.select { |group| by_group.key?(group) }
 
       Nokogiri::XML::Builder.new(encoding: "UTF-8") do |xml|
         xml.opml(version: "2.0") do

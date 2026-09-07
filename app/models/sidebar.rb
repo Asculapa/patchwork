@@ -7,8 +7,8 @@ class Sidebar
   # [[group, subscriptions], …] with named groups first and ungrouped sources last.
   def sections
     @sections ||= begin
-      by_group = @user.subscriptions.includes(:source, :group).alphabetical.group_by(&:group)
-      @user.groups.alphabetical.map { |group| [ group, by_group.fetch(group, []) ] } + [ [ nil, by_group.fetch(nil, []) ] ]
+      by_group = @user.subscriptions.includes(:source, :group).ordered.group_by(&:group)
+      @user.groups.ordered.map { |group| [ group, by_group.fetch(group, []) ] } + [ [ nil, by_group.fetch(nil, []) ] ]
     end
   end
 

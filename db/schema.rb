@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_09_12_193316) do
+ActiveRecord::Schema[8.1].define(version: 2026_09_17_140000) do
   create_table "entries", force: :cascade do |t|
     t.string "author"
     t.text "content_html"
@@ -42,8 +42,10 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_12_193316) do
   end
 
   create_table "groups", force: :cascade do |t|
+    t.boolean "collapsed", default: false, null: false
     t.datetime "created_at", null: false
     t.string "name", null: false
+    t.integer "position"
     t.datetime "updated_at", null: false
     t.integer "user_id", null: false
     t.index ["user_id", "name"], name: "index_groups_on_user_id_and_name", unique: true
@@ -270,6 +272,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_12_193316) do
     t.string "custom_title"
     t.integer "group_id"
     t.boolean "muted", default: false, null: false
+    t.integer "position"
     t.integer "source_id", null: false
     t.datetime "updated_at", null: false
     t.integer "user_id", null: false
@@ -302,6 +305,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_12_193316) do
     t.date "last_morning_notification_on"
     t.string "password_digest", null: false
     t.string "time_zone", default: "UTC", null: false
+    t.boolean "ungrouped_collapsed", default: false, null: false
     t.datetime "updated_at", null: false
     t.index ["email_address"], name: "index_users_on_email_address", unique: true
   end

@@ -22,7 +22,7 @@
   <div class="field-row">
     <div class="field">
       <%= form.label :group_id, "Group", class: "label" %>
-      <%= form.collection_select :group_id, Current.user.groups.alphabetical, :id, :name, { include_blank: "No group" }, class: "input" %>
+      <%= form.collection_select :group_id, Current.user.groups.ordered, :id, :name, { include_blank: "No group" }, class: "input" %>
     </div>
     <div class="field">
       <%= label_tag :new_group_name, "…or a new group", class: "label" %>

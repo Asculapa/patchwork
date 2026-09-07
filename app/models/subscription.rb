@@ -1,5 +1,7 @@
 # A user following a source, with their own title, group and mute setting.
 class Subscription < ApplicationRecord
+  include Positioned
+
   BACKFILL_LIMIT = 100
 
   belongs_to :user
@@ -18,6 +20,14 @@ class Subscription < ApplicationRecord
   }
 
   after_create_commit :backfill_entries
+
+  # Moves the subscription into `group` (nil for ungrouped) at `index`.
+  def move_to(index, group: self.group)
+    transaction do
+      update!(group: group)
+      insert_at(index, user.subscriptions.where(group: group))
+    end
+  end
 
   def title
     custom_title || source.display_title
