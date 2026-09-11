@@ -25,6 +25,8 @@
   --font-mono: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
   --sidebar-width: 17rem;
   --topbar-height: 3.5rem;
+  /* The yellow patch of the logo, fixed in both themes. */
+  --star: #fdb022;
   color-scheme: light dark;
 }
 
@@ -150,7 +152,7 @@ code {
 .button--small { padding: 0.25rem 0.6rem; font-size: 0.85rem; }
 .button--block { width: 100%; }
 .button--icon { padding-inline: 0.55rem; }
-.button.is-on { color: var(--warn); }
+.button.is-on .star { color: var(--star); }
 
 .icon-button {
   display: inline-grid;
@@ -165,7 +167,7 @@ code {
   cursor: pointer;
 }
 .icon-button:hover { background: var(--surface-2); color: var(--text); }
-.icon-button.is-on { color: var(--warn); }
+.icon-button.is-on { color: var(--star); }
 .icon-button.is-unread { color: var(--accent); font-size: 1.3rem; }
 
 .link-button {
@@ -518,7 +520,7 @@ button.nav__heading:hover { background: var(--surface-2); color: var(--text); }
 
 /* Today */
 
-.today-group + .today-group { margin-top: 2rem; }
+.today-group + .today-group { margin-top: 2.75rem; }
 .today-group__title {
   margin-bottom: 0.75rem;
   color: var(--muted);
@@ -527,7 +529,7 @@ button.nav__heading:hover { background: var(--surface-2); color: var(--text); }
   letter-spacing: 0.05em;
 }
 .today-group__title a { color: inherit; }
-.today-source + .today-source { margin-top: 1rem; }
+.today-source + .today-source { margin-top: 1.75rem; }
 .today-source__title { display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.4rem; font-size: 0.95rem; }
 .today-source__title a { display: inline-flex; align-items: center; gap: 0.5rem; color: var(--text); }
 .today-source__title .count { margin-left: 0; }
@@ -537,7 +539,13 @@ button.nav__heading:hover { background: var(--surface-2); color: var(--text); }
 
 /* Reader */
 
-.reader { max-width: 42rem; margin-inline: auto; }
+/* Centred on the viewport rather than the main column: shift left by half the sidebar,
+   but never past the column's left edge when the screen is too narrow for that. */
+.reader {
+  --reader-width: min(50rem, 100%);
+  width: var(--reader-width);
+  margin-left: max(0px, calc(50% - var(--sidebar-width) / 2 - var(--reader-width) / 2));
+}
 .reader__back { margin-bottom: 1rem; font-size: 0.9rem; }
 .reader__back a { color: var(--muted); }
 .reader__meta { display: flex; flex-wrap: wrap; align-items: center; gap: 0.4rem; color: var(--muted); font-size: 0.875rem; }
@@ -745,7 +753,20 @@ button.nav__heading:hover { background: var(--surface-2); color: var(--text); }
   .sidebar-open { overflow: hidden; }
   .main { padding: 1rem 1rem 3rem; }
   .page-title { font-size: 1.35rem; }
+  .reader { margin-inline: auto; }
   .reader__title { font-size: 1.5rem; }
-  .entry__thumb { width: 5rem; }
-  .entry__main { padding-left: 0.75rem; gap: 0.75rem; }
+  /* Star and read buttons float in the top-right corner: over the image when
+     there is one, otherwise beside the meta line, which leaves room for them. */
+  .entry { position: relative; }
+  .entry__main { flex-direction: column; padding: 0.5rem 0.75rem 0.85rem; gap: 0.6rem; }
+  .entry__actions { position: absolute; top: 0.5rem; right: 0.5rem; flex-direction: row; gap: 0.25rem; padding: 0; }
+  .entry__actions .icon-button { width: 2.25rem; height: 2.25rem; font-size: 1.4rem; }
+  .entry__actions .icon-button.is-unread { font-size: 1.1rem; }
+  .entry:not(:has(.entry__thumb)) .entry__meta { min-height: 2.25rem; padding-right: 5rem; }
+  .entry:has(.entry__thumb) .entry__main { padding-top: 0.75rem; }
+  .entry:has(.entry__thumb) .entry__actions { top: 1.2rem; right: 1.2rem; }
+  .entry:has(.entry__thumb) .icon-button { border-radius: 999px; background: rgb(0 0 0 / 0.5); color: #fff; }
+  .entry:has(.entry__thumb) .icon-button.is-on { color: var(--star); }
+  .entry:has(.entry__thumb) .icon-button.is-unread { color: #e07a4f; }
+  .entry__thumb { order: -1; width: 100%; aspect-ratio: 16 / 9; }
 }
