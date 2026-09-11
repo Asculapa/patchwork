@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <%= render "layouts/head" %>
+  </head>
+
+  <body class="auth">
+    <main class="auth__card">
+      <%= link_to root_path, class: "brand brand--center" do %>
+        <span class="brand__mark" aria-hidden="true"></span>Patchwork
+      <% end %>
+      <%= render "shared/flash" %>
+      <%= yield %>
+    </main>
+  </body>
+</html>

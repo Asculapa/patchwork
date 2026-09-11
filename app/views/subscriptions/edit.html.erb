@@ -1,0 +1,60 @@
+<% content_for :title, "Edit #{@subscription.title}" %>
+<% source = @subscription.source %>
+
+<header class="page-header">
+  <div class="page-header__text">
+    <h1 class="page-title"><%= @subscription.title %></h1>
+    <p class="page-subtitle"><%= source_status(source) %></p>
+  </div>
+</header>
+
+<%= form_with model: @subscription, class: "card form" do |form| %>
+  <% if @subscription.errors.any? %>
+    <div class="notice notice--alert"><%= @subscription.errors.full_messages.to_sentence %></div>
+  <% end %>
+
+  <div class="field">
+    <%= form.label :custom_title, "Title", class: "label" %>
+    <%= form.text_field :custom_title, placeholder: source.display_title, class: "input" %>
+    <p class="hint">Leave empty to use the source's own title.</p>
+  </div>
+
+  <div class="field-row">
+    <div class="field">
+      <%= form.label :group_id, "Group", class: "label" %>
+      <%= form.collection_select :group_id, Current.user.groups.alphabetical, :id, :name, { include_blank: "No group" }, class: "input" %>
+    </div>
+    <div class="field">
+      <%= label_tag :new_group_name, "…or a new group", class: "label" %>
+      <%= text_field_tag :new_group_name, nil, class: "input", placeholder: "e.g. Videos" %>
+    </div>
+  </div>
+
+  <div class="field field--checkbox">
+    <%= form.check_box :muted %>
+    <%= form.label :muted, "Mute: hide from Today and All unread (still visible on its own page)" %>
+  </div>
+
+  <div class="form__actions">
+    <%= form.submit "Save", class: "button button--primary" %>
+    <%= link_to "Cancel", subscriptions_path, class: "button button--ghost" %>
+  </div>
+<% end %>
+
+<section class="card details">
+  <h2 class="card__title">Details</h2>
+  <dl class="details__list">
+    <dt>Feed</dt><dd><code><%= source.url %></code></dd>
+    <% if source.site_url %><dt>Website</dt><dd><%= link_to source.site_url, source.site_url, target: "_blank", rel: "noopener noreferrer" %></dd><% end %>
+    <dt>Last fetched</dt><dd><%= source.last_fetched_at ? "#{time_ago_in_words(source.last_fetched_at)} ago" : "Never" %></dd>
+    <dt>Next fetch</dt><dd><%= source.next_fetch_at && source.active? ? "in #{distance_of_time_in_words_to_now(source.next_fetch_at)}" : "Not scheduled" %></dd>
+    <% if source.last_error %><dt>Last error</dt><dd class="text-warn"><%= source.last_error %></dd><% end %>
+  </dl>
+</section>
+
+<section class="card danger-zone">
+  <h2 class="card__title">Unsubscribe</h2>
+  <p>Removes this source and your read and star history for it, including starred entries.</p>
+  <%= button_to "Unsubscribe", subscription_path(@subscription), method: :delete, class: "button button--danger",
+        form: { data: { turbo_confirm: "Unsubscribe from #{@subscription.title}? Starred entries from it will be removed too." } } %>
+</section>

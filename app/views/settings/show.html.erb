@@ -1,0 +1,22 @@
+<% content_for :title, "Settings" %>
+
+<header class="page-header">
+  <div class="page-header__text">
+    <h1 class="page-title">Settings</h1>
+    <p class="page-subtitle">Signed in as <%= @user.email_address %></p>
+  </div>
+</header>
+
+<%= form_with model: @user, url: settings_path, method: :patch, class: "card form" do |form| %>
+  <% if @user.errors.any? %>
+    <div class="notice notice--alert"><%= @user.errors.full_messages.to_sentence %></div>
+  <% end %>
+  <div class="field">
+    <%= form.label :time_zone, class: "label" %>
+    <%= form.select :time_zone, time_zone_options(@user.time_zone), {}, class: "input" %>
+    <p class="hint">Used for dates and times across Patchwork.</p>
+  </div>
+  <div class="form__actions">
+    <%= form.submit "Save", class: "button button--primary" %>
+  </div>
+<% end %>

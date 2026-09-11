@@ -1,0 +1,23 @@
+<% content_for :title, "Import / export" %>
+
+<header class="page-header">
+  <div class="page-header__text">
+    <h1 class="page-title">Import / export</h1>
+    <p class="page-subtitle">OPML is the standard file format feed readers use to move subscriptions around.</p>
+  </div>
+</header>
+
+<section class="card">
+  <h2 class="card__title">Import from another reader</h2>
+  <p>Export an OPML file from Feedly, Inoreader, NetNewsWire or similar and upload it here. Folders become groups; sources you already follow are skipped.</p>
+  <%= form_with url: opml_path, multipart: true, class: "inline-form" do |form| %>
+    <%= form.file_field :file, accept: ".opml,.xml,text/xml,text/x-opml,application/xml", required: true, class: "input" %>
+    <%= form.submit "Import", class: "button button--primary", data: { turbo_submits_with: "Importing…" } %>
+  <% end %>
+</section>
+
+<section class="card">
+  <h2 class="card__title">Export</h2>
+  <p>Download all your sources, grouped, as an OPML file.</p>
+  <%= link_to "Download OPML", opml_path, class: "button", data: { turbo: false } %>
+</section>

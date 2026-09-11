@@ -1,0 +1,5 @@
+<% if user_entry.starred? %>
+  <%= button_to entry_star_path(user_entry.entry_id), method: :delete, class: "icon-button is-on", title: "Unstar", aria: { label: "Unstar" } do %>★<% end %>
+<% else %>
+  <%= button_to entry_star_path(user_entry.entry_id), class: "icon-button", title: "Star", aria: { label: "Star" } do %>☆<% end %>
+<% end %>

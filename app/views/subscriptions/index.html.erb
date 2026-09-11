@@ -1,0 +1,50 @@
+<% content_for :title, "Sources" %>
+
+<header class="page-header">
+  <div class="page-header__text">
+    <h1 class="page-title">Sources</h1>
+    <p class="page-subtitle"><%= pluralize(@subscriptions.size, "source") %></p>
+  </div>
+  <div class="page-actions">
+    <%= link_to "Import / export", new_opml_path, class: "button" %>
+    <%= link_to "Add source", new_subscription_path, class: "button button--primary" %>
+  </div>
+</header>
+
+<% if @subscriptions.empty? %>
+  <div class="empty">
+    <h2 class="empty__title">No sources yet</h2>
+    <%= link_to "Add your first source", new_subscription_path, class: "button button--primary" %>
+  </div>
+<% else %>
+  <div class="table-wrap">
+    <table class="table">
+      <thead>
+        <tr><th>Source</th><th>Group</th><th>Status</th><th><span class="visually-hidden">Actions</span></th></tr>
+      </thead>
+      <tbody>
+        <% @subscriptions.each do |subscription| %>
+          <% source = subscription.source %>
+          <tr id="<%= dom_id(subscription) %>">
+            <td>
+              <%= link_to entries_path(subscription_id: subscription.id), class: "source-cell" do %>
+                <%= source_avatar(source, css_class: "avatar avatar--sm") %>
+                <span>
+                  <strong><%= subscription.title %></strong>
+                  <% if subscription.muted? %><span class="badge">Muted</span><% end %>
+                  <small class="muted source-cell__url"><%= source.url %></small>
+                </span>
+              <% end %>
+            </td>
+            <td><%= subscription.group&.name || tag.span("—", class: "muted") %></td>
+            <td class="table__status<%= " text-warn" if source.failing? || !source.active? %>"><%= source_status(source) %></td>
+            <td class="table__actions">
+              <%= button_to "Refresh", refresh_subscription_path(subscription), class: "button button--small", data: { turbo_submits_with: "…" } %>
+              <%= link_to "Edit", edit_subscription_path(subscription), class: "button button--small" %>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+<% end %>

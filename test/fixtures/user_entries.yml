@@ -1,0 +1,25 @@
+one_blog_new:
+  user: one
+  entry: blog_new
+  subscription: one_blog
+  published_at: <%= 2.hours.ago.to_fs(:db) %>
+
+one_blog_old:
+  user: one
+  entry: blog_old
+  subscription: one_blog
+  published_at: <%= 3.days.ago.to_fs(:db) %>
+  read_at: <%= 2.days.ago.to_fs(:db) %>
+
+one_video:
+  user: one
+  entry: video
+  subscription: one_youtube
+  published_at: <%= 1.hour.ago.to_fs(:db) %>
+  starred_at: <%= 30.minutes.ago.to_fs(:db) %>
+
+two_blog_new:
+  user: two
+  entry: blog_new
+  subscription: two_blog
+  published_at: <%= 2.hours.ago.to_fs(:db) %>

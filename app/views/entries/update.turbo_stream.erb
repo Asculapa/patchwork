@@ -1,0 +1,3 @@
+<%= turbo_stream.replace dom_id(@user_entry), partial: "entries/entry", locals: { user_entry: @user_entry } %>
+<%= turbo_stream.replace dom_id(@user_entry, :actions), partial: "entries/actions", locals: { user_entry: @user_entry } %>
+<%= turbo_stream.replace "sidebar", partial: "shared/sidebar" %>

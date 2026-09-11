@@ -1,0 +1,37 @@
+<% entry = @user_entry.entry %>
+<% subscription = @user_entry.subscription %>
+<% content_for :title, entry.title %>
+
+<article class="reader">
+  <nav class="reader__back">
+    <%= link_to "← #{subscription.title}", entries_path(subscription_id: subscription.id) %>
+  </nav>
+
+  <header class="reader__header">
+    <div class="reader__meta">
+      <%= source_avatar(entry.source, css_class: "avatar avatar--sm") %>
+      <span><%= subscription.title %></span>
+      <% if entry.author %><span aria-hidden="true">·</span><span><%= entry.author %></span><% end %>
+      <span aria-hidden="true">·</span>
+      <%= time_ago(entry.published_at) %>
+    </div>
+    <h1 class="reader__title">
+      <%= link_to_if entry.url, entry.title, entry.url, target: "_blank", rel: "noopener noreferrer" %>
+    </h1>
+    <%= render "entries/actions", user_entry: @user_entry %>
+  </header>
+
+  <% if entry.youtube_video_id %>
+    <div class="video">
+      <%= tag.iframe src: "https://www.youtube-nocookie.com/embed/#{ERB::Util.url_encode(entry.youtube_video_id)}",
+            title: entry.title, loading: "lazy", allowfullscreen: true, referrerpolicy: "strict-origin-when-cross-origin",
+            allow: "accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" %>
+    </div>
+  <% end %>
+
+  <% if entry.content_html.present? %>
+    <div class="prose"><%= entry_content(entry) %></div>
+  <% else %>
+    <p class="muted">This entry has no content in the feed. <%= link_to "Read it on the original site ↗", entry.url, target: "_blank", rel: "noopener noreferrer" if entry.url %></p>
+  <% end %>
+</article>

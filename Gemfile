@@ -18,7 +18,7 @@ gem "stimulus-rails"
 gem "jbuilder"
 
 # Use Active Model has_secure_password [https://guides.rubyonrails.org/active_model_basics.html#securepassword]
-# gem "bcrypt", "~> 3.1.7"
+gem "bcrypt", "~> 3.1.7"
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
 gem "tzinfo-data", platforms: %i[ windows jruby ]
@@ -64,3 +64,13 @@ group :test do
   gem "capybara"
   gem "selenium-webdriver"
 end
+
+gem "feedjira", "~> 4.0"
+gem "ssrf_filter", "~> 1.6"
+gem "addressable", "~> 2.9"
+
+gem "webmock", "~> 3.26", group: :test
+
+# json 3.x rejects the positional options hash ActiveSupport 8.1.3's JSON.decode passes,
+# which breaks every JSON column. Drop this pin once Rails supports json 3.
+gem "json", "~> 2.19"

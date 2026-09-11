@@ -1,0 +1,7 @@
+tech:
+  user: one
+  name: Tech
+
+other_users_group:
+  user: two
+  name: Private

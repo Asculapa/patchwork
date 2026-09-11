@@ -1,0 +1,43 @@
+<nav id="sidebar" class="nav" data-controller="nav" aria-label="Reading">
+  <div class="nav__section">
+    <%= nav_link "Today", root_path, count: sidebar.today_count %>
+    <%= nav_link "All unread", entries_path(view: "unread"), count: sidebar.unread_count %>
+    <%= nav_link "Starred", entries_path(view: "starred"), count: sidebar.starred_count %>
+  </div>
+
+  <% sidebar.sections.each do |group, subscriptions| %>
+    <% next if group.nil? && subscriptions.empty? %>
+    <div class="nav__section">
+      <% if group %>
+        <%= nav_link group.name, entries_path(group_id: group.id), count: sidebar.unread_count_for_group(subscriptions), css_class: "nav-link--group" %>
+      <% else %>
+        <p class="nav__heading">Other</p>
+      <% end %>
+
+      <% subscriptions.each do |subscription| %>
+        <%= link_to entries_path(subscription_id: subscription.id), class: [ "nav-link", "nav-link--source", ("is-muted" if subscription.muted?) ] do %>
+          <%= source_avatar(subscription.source, css_class: "avatar avatar--sm") %>
+          <span class="nav-link__label"><%= subscription.title %></span>
+          <% if subscription.source.failing? %>
+            <span class="badge badge--warn" title="<%= subscription.source.last_error %>">!</span>
+          <% end %>
+          <% if (count = sidebar.unread_count_for(subscription)).positive? %>
+            <span class="count"><%= count %></span>
+          <% end %>
+        <% end %>
+      <% end %>
+    </div>
+  <% end %>
+
+  <% if sidebar.empty? %>
+    <p class="nav__empty">No sources yet. <%= link_to "Add your first one", new_subscription_path %>.</p>
+  <% end %>
+
+  <div class="nav__footer">
+    <%= link_to "Manage sources", subscriptions_path %>
+    <%= link_to "Groups", groups_path %>
+    <%= link_to "Import / export", new_opml_path %>
+    <%= link_to "Settings", settings_path %>
+    <%= button_to "Sign out", session_path, method: :delete, class: "link-button" %>
+  </div>
+</nav>

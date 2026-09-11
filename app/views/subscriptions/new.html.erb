@@ -1,0 +1,41 @@
+<% content_for :title, "Add source" %>
+
+<header class="page-header">
+  <div class="page-header__text">
+    <h1 class="page-title">Add a source</h1>
+    <p class="page-subtitle">Paste a website, a feed, a YouTube channel or @handle, a Medium author, a Substack or a subreddit.</p>
+  </div>
+</header>
+
+<%= form_with url: new_subscription_path, method: :get, class: "search-form" do |form| %>
+  <%= form.label :url, "Address", class: "visually-hidden" %>
+  <%= form.text_field :url, value: @query, class: "input", required: true, autofocus: @query.blank?, autocomplete: "off",
+        placeholder: "https://example.com · youtube.com/@channel · medium.com/@author" %>
+  <%= form.submit "Find feeds", class: "button button--primary", data: { turbo_submits_with: "Searching…" } %>
+<% end %>
+
+<% if @error %>
+  <div class="notice notice--alert"><%= @error %></div>
+<% elsif @candidates&.empty? %>
+  <div class="notice">
+    <strong>No feed found at this address.</strong>
+    <p>This site doesn't seem to publish RSS or Atom. Support for newsletters by email and for sites without feeds arrives in later phases.</p>
+  </div>
+<% elsif @candidates %>
+  <div class="candidates">
+    <%= render partial: "subscriptions/candidate", collection: @candidates, locals: { existing: @existing } %>
+  </div>
+<% else %>
+  <section class="card tips">
+    <h2 class="card__title">Things you can paste</h2>
+    <ul>
+      <li><strong>Any blog or news site</strong>: Patchwork finds its feed for you</li>
+      <li><strong>YouTube</strong>: <code>youtube.com/@channel</code>, a channel, video or playlist link, or just <code>@handle</code></li>
+      <li><strong>Medium</strong>: <code>medium.com/@author</code>, a publication or a tag</li>
+      <li><strong>Substack</strong>: <code>name.substack.com</code></li>
+      <li><strong>Reddit</strong>: <code>reddit.com/r/ruby</code></li>
+      <li><strong>A feed URL</strong>: RSS, Atom and JSON Feed all work</li>
+    </ul>
+    <p class="muted">Moving from another reader? <%= link_to "Import an OPML file", new_opml_path %>.</p>
+  </section>
+<% end %>

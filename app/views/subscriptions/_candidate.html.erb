@@ -1,0 +1,43 @@
+<% index = candidate_counter %>
+<article class="card candidate">
+  <header class="candidate__header">
+    <span class="badge"><%= candidate.kind == "youtube" ? "YouTube" : "Feed" %></span>
+    <h2 class="candidate__title"><%= candidate.title %></h2>
+    <p class="candidate__url"><%= candidate.url %></p>
+  </header>
+
+  <% if candidate.entries.any? %>
+    <ul class="candidate__preview">
+      <% candidate.entries.each do |entry| %>
+        <li><span><%= entry.title %></span> <%= time_ago(entry.published_at) %></li>
+      <% end %>
+    </ul>
+  <% else %>
+    <p class="muted">This feed has no items yet.</p>
+  <% end %>
+
+  <% if (subscription = existing[candidate.url]) %>
+    <p class="candidate__subscribed">
+      You already follow this source. <%= link_to "Open it", entries_path(subscription_id: subscription.id) %>
+    </p>
+  <% else %>
+    <%= form_with url: subscriptions_path, class: "candidate__form" do |form| %>
+      <%= hidden_field_tag :feed_url, candidate.url, id: nil %>
+      <%= hidden_field_tag :title, candidate.title, id: nil %>
+      <div class="field">
+        <%= label_tag "custom_title_#{index}", "Title", class: "label" %>
+        <%= text_field_tag "subscription[custom_title]", nil, id: "custom_title_#{index}", placeholder: candidate.title, class: "input" %>
+      </div>
+      <div class="field">
+        <%= label_tag "group_#{index}", "Group", class: "label" %>
+        <%= select_tag "subscription[group_id]", options_from_collection_for_select(Current.user.groups.alphabetical, :id, :name),
+              include_blank: "No group", id: "group_#{index}", class: "input" %>
+      </div>
+      <div class="field">
+        <%= label_tag "new_group_#{index}", "…or a new group", class: "label" %>
+        <%= text_field_tag :new_group_name, nil, id: "new_group_#{index}", placeholder: "e.g. Videos", class: "input" %>
+      </div>
+      <%= form.submit "Subscribe", class: "button button--primary", data: { turbo_submits_with: "Subscribing…" } %>
+    <% end %>
+  <% end %>
+</article>

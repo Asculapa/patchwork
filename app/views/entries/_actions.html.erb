@@ -1,0 +1,18 @@
+<% entry = user_entry.entry %>
+<div id="<%= dom_id(user_entry, :actions) %>" class="reader__actions">
+  <% if user_entry.starred? %>
+    <%= button_to "★ Starred", entry_star_path(entry), method: :delete, class: "button is-on" %>
+  <% else %>
+    <%= button_to "☆ Star", entry_star_path(entry), class: "button" %>
+  <% end %>
+
+  <% if user_entry.read? %>
+    <%= button_to "Mark as unread", entry_read_path(entry), method: :delete, class: "button" %>
+  <% else %>
+    <%= button_to "Mark as read", entry_read_path(entry), class: "button" %>
+  <% end %>
+
+  <% if entry.url %>
+    <%= link_to "Open original ↗", entry.url, class: "button", target: "_blank", rel: "noopener noreferrer" %>
+  <% end %>
+</div>

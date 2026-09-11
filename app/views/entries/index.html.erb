@@ -1,0 +1,66 @@
+<% content_for :title, @filter.title %>
+<% content_for :head do %>
+  <meta name="turbo-cache-control" content="no-cache">
+<% end %>
+
+<header class="page-header">
+  <div class="page-header__text">
+    <h1 class="page-title"><%= @filter.title %></h1>
+    <% if (subscription = @filter.subscription) %>
+      <p class="page-subtitle">
+        <% if subscription.source.site_url %>
+          <%= link_to subscription.source.site_url.sub(%r{\Ahttps?://(www\.)?}, "").chomp("/"), subscription.source.site_url, target: "_blank", rel: "noopener noreferrer" %> ·
+        <% end %>
+        <%= source_status(subscription.source) %>
+      </p>
+    <% end %>
+  </div>
+
+  <div class="page-actions">
+    <% if @filter.narrowed? %>
+      <nav class="segmented" aria-label="Show">
+        <%= link_to "Unread", entries_path(@filter.to_params(view: "unread")), class: [ "segmented__item", ("is-active" if @filter.view == "unread") ] %>
+        <%= link_to "All", entries_path(@filter.to_params(view: "all")), class: [ "segmented__item", ("is-active" if @filter.view == "all") ] %>
+      </nav>
+    <% end %>
+    <% if (subscription = @filter.subscription) %>
+      <%= button_to "Refresh", refresh_subscription_path(subscription), class: "button", data: { turbo_submits_with: "Refreshing…" } %>
+      <%= link_to "Edit", edit_subscription_path(subscription), class: "button" %>
+    <% end %>
+    <%= render "entries/mark_all_read", filter: @filter unless @filter.view == "starred" %>
+  </div>
+</header>
+
+<% if @filter.today? %>
+  <% if @sections.empty? %>
+    <%= render "entries/empty", filter: @filter %>
+  <% else %>
+    <% @sections.each do |group, by_subscription| %>
+      <section class="today-group">
+        <h2 class="today-group__title">
+          <%= group ? link_to(group.name, entries_path(group_id: group.id)) : "Other" %>
+        </h2>
+        <% by_subscription.each do |subscription, user_entries| %>
+          <div class="today-source">
+            <h3 class="today-source__title">
+              <%= link_to entries_path(subscription_id: subscription.id) do %>
+                <%= source_avatar(subscription.source, css_class: "avatar avatar--sm") %>
+                <span><%= subscription.title %></span>
+              <% end %>
+              <span class="count"><%= user_entries.size %></span>
+            </h3>
+            <div class="entry-list">
+              <%= render partial: "entries/entry", collection: user_entries, as: :user_entry %>
+            </div>
+          </div>
+        <% end %>
+      </section>
+    <% end %>
+  <% end %>
+<% elsif @user_entries.empty? %>
+  <%= render "entries/empty", filter: @filter %>
+<% else %>
+  <div class="entry-list" id="entries">
+    <%= render "entries/page", user_entries: @user_entries, next_cursor: @next_cursor, filter: @filter %>
+  </div>
+<% end %>
