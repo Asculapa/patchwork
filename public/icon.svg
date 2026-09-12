@@ -1,3 +1,29 @@
-<svg width="512" height="512" xmlns="http://www.w3.org/2000/svg">
-  <circle cx="256" cy="256" r="256" fill="red"/>
+<svg width="512" height="512" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
+  <!-- Patchwork logo: scaled-up .brand__mark (a four-patch quilt block).
+       Colors mirror the accent/warn/muted theme vars, including the dark-theme swap. -->
+  <defs>
+    <clipPath id="markClip">
+      <rect x="0" y="0" width="512" height="512" rx="87" ry="87"/>
+    </clipPath>
+  </defs>
+  <style>
+    .c-accent { fill: #b4532a; }
+    .c-warn { fill: #b54708; }
+    .c-muted { fill: #6b665e; }
+    @media (prefers-color-scheme: dark) {
+      .c-accent { fill: #e07a4f; }
+      .c-warn { fill: #fdb022; }
+      .c-muted { fill: #a39d93; }
+    }
+  </style>
+  <g clip-path="url(#markClip)">
+    <!-- 0%-25%: top-mid -> top-right corner -> right-mid -->
+    <path class="c-accent" d="M256,256 L256,0 L512,0 L512,256 Z"/>
+    <!-- 25%-50%: right-mid -> bottom-right corner -> bottom-mid -->
+    <path class="c-warn" d="M256,256 L512,256 L512,512 L256,512 Z"/>
+    <!-- 50%-75%: bottom-mid -> bottom-left corner -> left-mid -->
+    <path class="c-accent" d="M256,256 L256,512 L0,512 L0,256 Z"/>
+    <!-- 75%-100%: left-mid -> top-left corner -> top-mid -->
+    <path class="c-muted" d="M256,256 L0,256 L0,0 L256,0 Z"/>
+  </g>
 </svg>
