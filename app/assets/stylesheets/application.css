@@ -591,6 +591,13 @@ input[type="file"].input { padding: 0.35rem; }
 .brand--center { display: flex; justify-content: center; margin-bottom: 1.5rem; }
 .auth__title { margin-bottom: 1.25rem; font-size: 1.35rem; text-align: center; }
 .auth__alt { margin: 1.25rem 0 0; color: var(--muted); font-size: 0.875rem; text-align: center; }
+.auth__card--wide { max-width: 42rem; text-align: left; }
+
+.legal-content h1 { margin: 0 0 0.25rem; font-size: 1.5rem; }
+.legal-content h2 { margin: 1.75rem 0 0.5rem; font-size: 1.1rem; }
+.legal-content p, .legal-content li { color: var(--muted); }
+.legal-content ul { margin: 0.5rem 0; padding-left: 1.25rem; }
+.legal-content .legal-meta { margin: 0 0 1.5rem; color: var(--muted); font-size: 0.8125rem; }
 
 /* Narrow screens: off-canvas sidebar */
 

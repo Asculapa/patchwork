@@ -2,20 +2,21 @@
 
 # Feed content is sanitised at ingest; the CSP is the second line of defence
 # (§7.1). Images may come from any https host; the only embeddable frames are
-# privacy-enhanced YouTube players.
+# privacy-enhanced YouTube players and the Cloudflare Turnstile CAPTCHA widget
+# used on registration.
 Rails.application.configure do
   config.content_security_policy do |policy|
     policy.default_src :self
     policy.base_uri    :self
-    policy.connect_src :self
+    policy.connect_src :self, "https://challenges.cloudflare.com"
     policy.font_src    :self, :data
     policy.form_action :self
     policy.frame_ancestors :none
-    policy.frame_src   "https://www.youtube-nocookie.com"
+    policy.frame_src   "https://www.youtube-nocookie.com", "https://challenges.cloudflare.com"
     policy.img_src     :self, :https, :data
     policy.media_src   :self, :https
     policy.object_src  :none
-    policy.script_src  :self
+    policy.script_src  :self, "https://challenges.cloudflare.com"
     policy.style_src   :self
   end
 

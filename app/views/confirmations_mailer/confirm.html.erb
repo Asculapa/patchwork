@@ -1,0 +1,6 @@
+<p>
+  Welcome to Patchwork! Confirm your email address on
+  <%= link_to "this confirmation page", confirmation_url(@token) %>.
+
+  This link will expire in <%= distance_of_time_in_words(0, 1.day) %>.
+</p>
