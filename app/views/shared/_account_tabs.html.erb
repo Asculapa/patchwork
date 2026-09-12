@@ -1,0 +1,5 @@
+<nav class="segmented account-tabs" aria-label="Account">
+  <%= link_to "Settings", settings_path, class: [ "segmented__item", ("is-active" if controller.controller_name == "settings") ] %>
+  <%= link_to "Groups", groups_path, class: [ "segmented__item", ("is-active" if controller.controller_name == "groups") ] %>
+  <%= link_to "Import / export", new_opml_path, class: [ "segmented__item", ("is-active" if controller.controller_name == "opml") ] %>
+</nav>

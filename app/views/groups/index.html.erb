@@ -7,6 +7,8 @@
   </div>
 </header>
 
+<%= render "shared/account_tabs" %>
+
 <%= form_with model: @group, class: "card inline-form" do |form| %>
   <%= form.label :name, "New group", class: "visually-hidden" %>
   <%= form.text_field :name, class: "input", placeholder: "New group name", required: true, maxlength: 50 %>

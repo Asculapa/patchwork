@@ -4,6 +4,8 @@
   <h1 class="page-title">Rename group</h1>
 </header>
 
+<%= render "shared/account_tabs" %>
+
 <%= form_with model: @group, class: "card form" do |form| %>
   <% if @group.errors.any? %>
     <div class="notice notice--alert"><%= @group.errors.full_messages.to_sentence %></div>

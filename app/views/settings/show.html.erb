@@ -7,6 +7,8 @@
   </div>
 </header>
 
+<%= render "shared/account_tabs" %>
+
 <%= form_with model: @user, url: settings_path, method: :patch, class: "card form" do |form| %>
   <% if @user.errors.any? %>
     <div class="notice notice--alert"><%= @user.errors.full_messages.to_sentence %></div>
