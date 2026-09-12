@@ -9,7 +9,7 @@
 
   <header class="reader__header">
     <div class="reader__meta">
-      <%= source_avatar(entry.source, css_class: "avatar avatar--sm") %>
+      <%= source_avatar(entry.source, title: subscription.title, css_class: "avatar avatar--sm") %>
       <span><%= subscription.title %></span>
       <% if entry.author %><span aria-hidden="true">·</span><span><%= entry.author %></span><% end %>
       <span aria-hidden="true">·</span>
