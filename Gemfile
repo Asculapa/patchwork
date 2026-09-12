@@ -78,7 +78,7 @@ gem "webmock", "~> 3.26", group: :test
 
 # json 3.x rejects the positional options hash ActiveSupport 8.1.3's JSON.decode passes,
 # which breaks every JSON column. Drop this pin once Rails supports json 3.
-gem "json", "~> 2.19"
+gem "json", "~> 3.0"
 
 gem "honeybadger", "~> 6.9"
 
