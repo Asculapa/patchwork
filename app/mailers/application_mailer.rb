@@ -1,4 +1,4 @@
 class ApplicationMailer < ActionMailer::Base
-  default from: "from@example.com"
+  default from: "Patchwork <notifications@patchwork.buzz>"
   layout "mailer"
 end
