@@ -5,6 +5,7 @@ class User < ApplicationRecord
   has_many :subscriptions, dependent: :destroy
   has_many :user_entries, dependent: :delete_all
   has_many :sources, through: :subscriptions
+  has_many :push_subscriptions, dependent: :destroy
 
   normalizes :email_address, with: ->(e) { e.strip.downcase }
   # Browsers report IANA names ("Europe/Kyiv"), the settings page Rails names

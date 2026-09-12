@@ -54,6 +54,12 @@
 
 *, *::before, *::after { box-sizing: border-box; }
 
+/* .button and similar utility classes set their own `display`, which beats
+   the UA stylesheet's `[hidden] { display: none }` regardless of specificity
+   since author rules always win over UA rules. Restate it here so toggling
+   the `hidden` attribute via JS still works on flex/inline-flex elements. */
+[hidden] { display: none !important; }
+
 html { -webkit-text-size-adjust: 100%; }
 
 body {
