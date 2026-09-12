@@ -13,7 +13,11 @@ module ApplicationHelper
   # matches its label instead of staying stuck on the feed's original name.
   def source_avatar(source, title: source.display_title, css_class: "avatar")
     if source.icon_url.present?
-      image_tag source.icon_url, alt: "", class: css_class, loading: "lazy", referrerpolicy: "no-referrer"
+      # PNGs are often icons with transparency drawn in a dark colour, which
+      # disappears against the dark theme's background -- give them a white
+      # backing plate. (Other formats are usually opaque photos/thumbnails.)
+      png = source.icon_url.match?(/\.png(\?|\z)/i)
+      image_tag source.icon_url, alt: "", class: [ css_class, ("avatar--png" if png) ], loading: "lazy", referrerpolicy: "no-referrer"
     else
       tag.span title.first.to_s.upcase, class: [ css_class, "avatar--letter", "avatar--c#{source.id.to_i % AVATAR_COLORS}" ],
         aria: { hidden: true }

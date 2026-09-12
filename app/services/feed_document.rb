@@ -4,6 +4,9 @@ class FeedDocument
 
   # RSS enclosures are also podcasts and videos; only real images make thumbnails.
   MEDIA_FILE = /\.(mp3|m4a|aac|ogg|oga|opus|wav|mp4|m4v|mov|webm)(\?|\z)/i
+  # Some feeds (Reddit's <icon> among them) publish an image URL with a stray
+  # trailing slash after the extension, which 404s.
+  ICON_TRAILING_SLASH = %r{(\.(?:png|jpe?g|gif|webp|ico|svg))/\z}i
 
   attr_reader :title, :site_url, :icon_url, :description, :entries, :min_interval
 
@@ -18,7 +21,8 @@ class FeedDocument
     @title = text(feed.title)
     @site_url = UrlNormalizer.resolve(feed.url, base: url)
     @description = text(feed.try(:description)).truncate(500)
-    @icon_url = UrlNormalizer.resolve(feed.try(:icon).presence || feed.try(:favicon).presence || feed.try(:image).try(:url), base: url)
+    icon = feed.try(:icon).presence || feed.try(:logo).presence || feed.try(:favicon).presence || feed.try(:image).try(:url)
+    @icon_url = UrlNormalizer.resolve(icon&.sub(ICON_TRAILING_SLASH, '\1'), base: url)
     @min_interval = feed.try(:ttl).to_i.minutes if feed.try(:ttl).to_i.positive?
     @entries = feed.entries.map { |entry| normalize(entry) }
 

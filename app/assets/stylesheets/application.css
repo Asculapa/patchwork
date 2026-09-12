@@ -265,6 +265,12 @@ input[type="file"].input { padding: 0.35rem; }
 .avatar--c6 { background: #4c7a34; }
 .avatar--c7 { background: #5b5f66; }
 
+/* PNG icons are often drawn in a dark colour on a transparent background,
+   which disappears against the dark theme -- back them with white. */
+@media (prefers-color-scheme: dark) {
+  .avatar--png { background: #fff; }
+}
+
 /* App shell */
 
 .topbar {
