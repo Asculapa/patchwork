@@ -192,6 +192,8 @@ form.button_to { display: inline; margin: 0; }
   background: var(--surface);
   color: var(--text);
   font: inherit;
+  /* 16px minimum stops iOS Safari from zooming in when the field is focused. */
+  font-size: 1rem;
 }
 .input:focus { outline: 2px solid var(--accent-soft); border-color: var(--accent); }
 select.input { padding-right: 2rem; }
@@ -202,7 +204,7 @@ input[type="file"].input { padding: 0.35rem; }
 .inline-form__error { flex-basis: 100%; margin: 0; color: var(--danger); font-size: 0.875rem; }
 
 .search-form { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 1.5rem; }
-.search-form .input { flex: 1 1 18rem; width: auto; font-size: 1rem; padding: 0.65rem 0.85rem; }
+.search-form .input { flex: 1 1 18rem; width: auto; padding: 0.65rem 0.85rem; }
 
 /* Notices and flash */
 
@@ -279,12 +281,14 @@ input[type="file"].input { padding: 0.35rem; }
   display: grid;
   grid-template-columns: var(--sidebar-width) minmax(0, 1fr);
   min-height: calc(100vh - var(--topbar-height));
+  min-height: calc(100dvh - var(--topbar-height));
 }
 
 .sidebar {
   position: sticky;
   top: var(--topbar-height);
   height: calc(100vh - var(--topbar-height));
+  height: calc(100dvh - var(--topbar-height));
   overflow-y: auto;
   border-right: 1px solid var(--border);
   background: var(--surface);
@@ -294,6 +298,8 @@ input[type="file"].input { padding: 0.35rem; }
   width: 100%;
   padding: 1.5rem 2rem 4rem;
 }
+
+.sidebar-backdrop { display: none; }
 
 /* Sidebar navigation */
 
@@ -566,7 +572,7 @@ input[type="file"].input { padding: 0.35rem; }
 
 /* Auth pages */
 
-.auth { display: grid; place-items: center; min-height: 100vh; padding: 1.5rem 1rem; }
+.auth { display: grid; place-items: center; min-height: 100vh; min-height: 100dvh; padding: 1.5rem 1rem; }
 .auth__card {
   width: 100%;
   max-width: 24rem;
@@ -595,6 +601,18 @@ input[type="file"].input { padding: 0.35rem; }
     box-shadow: var(--shadow);
   }
   .sidebar-open .sidebar { transform: none; }
+  .sidebar-backdrop {
+    display: block;
+    position: fixed;
+    inset: var(--topbar-height) 0 0 0;
+    z-index: 14;
+    background: rgb(0 0 0 / 0.4);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.2s ease;
+  }
+  .sidebar-open .sidebar-backdrop { opacity: 1; pointer-events: auto; }
+  .sidebar-open { overflow: hidden; }
   .main { padding: 1rem 1rem 3rem; }
   .page-title { font-size: 1.35rem; }
   .reader__title { font-size: 1.5rem; }
