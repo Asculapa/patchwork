@@ -1,1 +1,22 @@
 # See https://www.robotstxt.org/robotstxt.html for documentation on how to use the robots.txt file
+
+User-agent: *
+
+# The landing page and the legal pages are the indexable surface.
+Allow: /
+
+# Everything below is either behind sign-in or has nothing to index.
+Disallow: /entries
+Disallow: /subscriptions
+Disallow: /groups
+Disallow: /settings
+Disallow: /opml
+Disallow: /push_subscriptions
+Disallow: /login
+Disallow: /logout
+Disallow: /registration
+Disallow: /passwords
+Disallow: /confirmations
+Disallow: /up
+
+Sitemap: https://patchwork.buzz/sitemap.xml
