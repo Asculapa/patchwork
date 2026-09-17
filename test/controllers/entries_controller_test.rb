@@ -98,6 +98,19 @@ class EntriesControllerTest < ActionDispatch::IntegrationTest
     assert_select ".prose script", count: 0
   end
 
+  test "show omits the author when it duplicates the subscription title" do
+    entry = entries(:blog_new)
+    title = user_entries(:one_blog_new).subscription.title
+
+    entry.update!(author: title)
+    get entry_path(entry)
+    assert_select ".reader__meta span", text: title, count: 1
+
+    entry.update!(author: "Someone Else")
+    get entry_path(entry)
+    assert_select ".reader__meta span", text: "Someone Else", count: 1
+  end
+
   test "show of an entry from a source you don't follow is not found" do
     entry = Entry.create!(source: sources(:orphan), guid: "x", title: "Nope", published_at: Time.current)
     get entry_path(entry)
