@@ -116,8 +116,9 @@ code {
   width: 1.1rem;
   height: 1.1rem;
   border-radius: 3px;
+  /* Fixed dark-theme colors in both themes, matching public/icon.svg. */
   background:
-    conic-gradient(var(--accent) 0 25%, var(--warn) 0 50%, var(--accent) 0 75%, var(--muted) 0);
+    conic-gradient(#e07a4f 0 25%, #fdb022 0 50%, #e07a4f 0 75%, #a39d93 0);
 }
 
 /* Buttons */
@@ -346,6 +347,42 @@ input[type="file"].input { padding: 0.35rem; }
 .nav-link--source { padding-left: 0.9rem; }
 .nav-link.is-muted { opacity: 0.55; }
 .nav-link__label { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+/* Collapsible groups (collapse_controller.js): clicking a group's name, or
+   "Other", hides its sources. A collapsed group still shows the source being read. */
+button.nav-link,
+button.nav__heading {
+  width: 100%;
+  border: 0;
+  background: none;
+  font-family: inherit;
+  line-height: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+button.nav__heading { display: flex; align-items: center; justify-content: space-between; gap: 0.5rem; border-radius: var(--radius-sm); }
+button.nav__heading .count { text-transform: none; letter-spacing: normal; font-weight: 400; }
+button.nav__heading:hover { background: var(--surface-2); color: var(--text); }
+.is-collapsed .nav__sources .nav-link:not(.is-active, .is-dragging) { display: none; }
+
+/* Drag and drop reordering (sortable_controller.js) */
+.nav__sources { display: grid; grid-template-columns: minmax(0, 1fr); gap: 1px; }
+.nav__section--placeholder { display: none; }
+[data-sortable-handle] { -webkit-user-select: none; user-select: none; -webkit-touch-callout: none; }
+.nav.is-sorting { cursor: grabbing; }
+.nav.is-sorting .nav-link { cursor: grabbing; }
+.nav.is-sorting .nav-link:hover:not(.is-dragging) { background: none; }
+.nav.is-sorting-groups .nav__sources { display: none; }
+.nav.is-sorting-groups [data-sortable-group] { padding-block: 0.25rem; }
+.nav.is-sorting-sources .nav__section--placeholder { display: grid; }
+.nav .is-dragging {
+  /* Above its neighbours so the next section's border doesn't cover the outline. */
+  position: relative;
+  z-index: 1;
+  background: var(--accent-soft);
+  border-radius: var(--radius-sm);
+  box-shadow: 0 0 0 1px var(--accent);
+}
 
 .nav__footer {
   display: grid;

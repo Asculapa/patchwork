@@ -30,7 +30,7 @@
       </div>
       <div class="field">
         <%= label_tag "group_#{index}", "Group", class: "label" %>
-        <%= select_tag "subscription[group_id]", options_from_collection_for_select(Current.user.groups.alphabetical, :id, :name),
+        <%= select_tag "subscription[group_id]", options_from_collection_for_select(Current.user.groups.ordered, :id, :name),
               include_blank: "No group", id: "group_#{index}", class: "input" %>
       </div>
       <div class="field">
