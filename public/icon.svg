@@ -1,20 +1,15 @@
 <svg width="512" height="512" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
   <!-- Patchwork logo: scaled-up .brand__mark (a four-patch quilt block).
-       Colors mirror the accent/warn/muted theme vars, including the dark-theme swap. -->
+       Colors are the dark-theme accent/warn/muted vars, used for both themes since installed app icons are static. -->
   <defs>
     <clipPath id="markClip">
       <rect x="0" y="0" width="512" height="512" rx="87" ry="87"/>
     </clipPath>
   </defs>
   <style>
-    .c-accent { fill: #b4532a; }
-    .c-warn { fill: #b54708; }
-    .c-muted { fill: #6b665e; }
-    @media (prefers-color-scheme: dark) {
-      .c-accent { fill: #e07a4f; }
-      .c-warn { fill: #fdb022; }
-      .c-muted { fill: #a39d93; }
-    }
+    .c-accent { fill: #e07a4f; }
+    .c-warn { fill: #fdb022; }
+    .c-muted { fill: #a39d93; }
   </style>
   <g clip-path="url(#markClip)">
     <!-- 0%-25%: top-mid -> top-right corner -> right-mid -->
