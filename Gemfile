@@ -80,7 +80,7 @@ gem "webmock", "~> 3.26", group: :test
 # which breaks every JSON column. Drop this pin once Rails supports json 3.
 gem "json", "~> 2.19"
 
-gem "honeybadger", "~> 6.9"
+gem "honeybadger", "~> 6.10"
 
 # Sends transactional email through Resend's HTTP API instead of SMTP,
 # since some hosts (Railway, some Docker setups) block outbound port 587.
